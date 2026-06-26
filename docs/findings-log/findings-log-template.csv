@@ -1,0 +1,6 @@
+date_logged,finding_id,title,category,severity,status,evidence_location,notes
+,F1,Hardcoded Cognitive Services API key in application config,Identity,Critical,Open,,"Confirm location in app/config.py before remediating"
+,F2,Public blob access on Storage Account containing transaction exports,Data,Critical,Open,,"Confirm via incognito browser test"
+,F3,Cognitive Services endpoint reachable without authentication,Network,Critical,Open,,"Confirm via curl from outside app network"
+,F4,No Defender for Cloud posture management enabled,Governance,High,Open,,"Capture baseline Secure Score before any fixes"
+,F5,No guardrail policies preventing recurrence,Governance,High,Open,,"Addressed in Week 2 via Azure Policy"

@@ -1,0 +1,29 @@
+{
+  "properties": {
+    "displayName": "Deny public blob access on Storage Accounts",
+    "description": "Prevents creation or update of a Storage Account with allowBlobPublicAccess set to true. Authored in response to Incident 2 in the Penhallow Pay engagement — a Storage Account containing transaction exports was provisioned with public blob access enabled and never reviewed. This policy makes that specific misconfiguration impossible to repeat on any future resource in this subscription, regardless of who provisions it or under what time pressure.",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "metadata": {
+      "category": "Storage",
+      "source": "Penhallow Pay Cloud Security Engagement"
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Storage/storageAccounts"
+          },
+          {
+            "field": "Microsoft.Storage/storageAccounts/allowBlobPublicAccess",
+            "equals": "true"
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

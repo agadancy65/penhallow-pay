@@ -1,0 +1,123 @@
+"""
+Penhallow Pay — Spending Insights Chatbot
+==========================================
+
+This is the application referenced throughout the Penhallow Pay case study.
+It allows customers to ask natural-language questions about their transaction
+history, answered by an Azure Cognitive Services-backed model.
+
+⚠️  INTENTIONAL VULNERABILITY — DO NOT FIX BEFORE TUESDAY OF WEEK 1
+This file contains the planted security finding referenced as "Incident 1"
+in the case study: a hardcoded Cognitive Services API key. Confirm and log
+this finding (Tuesday, Week 1) before remediating it (Wednesday/Thursday).
+
+See config.py for the exact location of the hardcoded credential.
+"""
+
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+from pydantic import BaseModel
+import logging
+import os
+
+from config import get_cognitive_services_credentials
+from transactions import get_customer_transactions, MOCK_CUSTOMERS
+from chatbot import answer_spending_question
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("penhallow.spending_insights")
+
+app = FastAPI(
+    title="Penhallow Pay — Spending Insights",
+    description="AI-powered transaction Q&A for Penhallow Pay customers",
+    version="1.0.0",
+)
+
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
+templates = Jinja2Templates(directory="app/templates")
+
+
+class ChatRequest(BaseModel):
+    customer_id: str
+    question: str
+
+
+class ChatResponse(BaseModel):
+    answer: str
+    customer_id: str
+
+
+@app.get("/", response_class=HTMLResponse)
+async def home(request: Request):
+    """Landing page for the Spending Insights demo."""
+    return templates.TemplateResponse(
+        "index.html",
+        {"request": request, "customers": list(MOCK_CUSTOMERS.keys())},
+    )
+
+
+@app.get("/health")
+async def health():
+    """
+    Basic health check.
+
+    NOTE: In the vulnerable starting state, this endpoint requires no
+    authentication and is reachable from the public internet — this is
+    expected for a health check. The chatbot endpoint below, however,
+    should NOT share this same exposure profile, and currently does
+    (see Incident 3 in the case study).
+    """
+    return {"status": "healthy", "service": "spending-insights"}
+
+
+@app.post("/api/chat", response_model=ChatResponse)
+async def chat(payload: ChatRequest):
+    """
+    Answer a natural-language question about a customer's transaction
+    history using Azure Cognitive Services.
+
+    SECURITY NOTE FOR INTERNS:
+    This endpoint currently has no caller authentication beyond the
+    customer_id supplied in the request body — that ID is trusted as-is,
+    with no verification the caller is actually that customer. This is
+    a second-order finding worth noting in your AI risk analysis
+    (Tuesday, Week 2) even though it is not one of the five primary
+    incidents listed in the case study. Real engagements often surface
+    findings beyond the ones already known going in — noticing this one
+    yourself is a good sign.
+    """
+    if payload.customer_id not in MOCK_CUSTOMERS:
+        raise HTTPException(status_code=404, detail="Customer not found")
+
+    transactions = get_customer_transactions(payload.customer_id)
+
+    try:
+        credentials = get_cognitive_services_credentials()
+        answer = answer_spending_question(
+            question=payload.question,
+            transactions=transactions,
+            credentials=credentials,
+        )
+    except Exception as exc:
+        logger.error(f"Chatbot error for customer {payload.customer_id}: {exc}")
+        raise HTTPException(
+            status_code=502, detail="Spending Insights is temporarily unavailable"
+        )
+
+    return ChatResponse(answer=answer, customer_id=payload.customer_id)
+
+
+@app.get("/api/transactions/{customer_id}")
+async def list_transactions(customer_id: str):
+    """List raw transactions for a customer — used by the frontend table view."""
+    if customer_id not in MOCK_CUSTOMERS:
+        raise HTTPException(status_code=404, detail="Customer not found")
+    return {"customer_id": customer_id, "transactions": get_customer_transactions(customer_id)}
+
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

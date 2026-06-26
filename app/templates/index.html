@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Penhallow Pay — Spending Insights</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <header class="topbar">
+        <div class="logo">Penhallow<span class="logo-accent">Pay</span></div>
+        <div class="tagline">Spending Insights — Ask anything about your transactions</div>
+    </header>
+
+    <main class="container">
+        <section class="customer-select">
+            <label for="customer">Viewing as:</label>
+            <select id="customer">
+                {% for customer_id in customers %}
+                <option value="{{ customer_id }}">{{ customer_id }}</option>
+                {% endfor %}
+            </select>
+        </section>
+
+        <section class="chat-window" id="chat-window">
+            <div class="chat-message bot">
+                Hi! Ask me anything about your recent spending — for example,
+                "How much did I spend on groceries last month?" or
+                "What's my biggest expense category?"
+            </div>
+        </section>
+
+        <section class="chat-input">
+            <input type="text" id="question" placeholder="Ask a question about your spending..." />
+            <button id="send-btn">Send</button>
+        </section>
+    </main>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+customer_id,customer_name,date,merchant,category,amount_gbp,account_reference
+PEN-10234,Aisha Bello,2026-05-02,Tesco,Groceries,42.18,****6621
+PEN-10234,Aisha Bello,2026-05-01,TfL,Transport,8.50,****6621
+PEN-10234,Aisha Bello,2026-04-29,Penhallow Properties Ltd,Rent,1250.00,****6621
+PEN-10891,James Whitfield,2026-05-03,British Gas,Utilities,89.40,****3304
+PEN-10891,James Whitfield,2026-05-02,Deliveroo,Dining Out,24.99,****3304
+PEN-10891,James Whitfield,2026-04-28,Netflix,Subscriptions,10.99,****3304
+PEN-11456,Priya Shah,2026-05-04,Sainsbury's,Groceries,61.27,****9012
+PEN-11456,Priya Shah,2026-05-01,Boots Pharmacy,Healthcare,14.50,****9012
+PEN-11456,Priya Shah,2026-04-30,Penhallow Savings Pot,Savings Transfer,150.00,****9012

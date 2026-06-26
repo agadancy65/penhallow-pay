@@ -1,0 +1,48 @@
+name: Security Scan — Penhallow Pay
+
+# This workflow demonstrates the kind of automated secrets-scanning a real
+# engagement would have caught Incident 1 with, well before a penetration
+# test ever ran. It is provided as a reference / stretch goal — running it
+# successfully against your remediated code (after Week 1, Thu) is a nice
+# piece of evidence for your report, but it is not a required deliverable.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  secrets-scan:
+    name: Scan for hardcoded secrets
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run TruffleHog
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          extra_args: --only-verified
+
+  dependency-check:
+    name: Check Python dependencies for known vulnerabilities
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install pip-audit
+        run: pip install pip-audit
+
+      - name: Run pip-audit
+        run: pip-audit -r requirements.txt

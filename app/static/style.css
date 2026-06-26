@@ -1,0 +1,111 @@
+:root {
+  --penhallow-navy: #1a3c5e;
+  --penhallow-teal: #0b7a75;
+  --bg: #f4f8fb;
+  --border: #d6e4ec;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, "Segoe UI", Arial, sans-serif;
+  margin: 0;
+  background: var(--bg);
+  color: #1a1a1a;
+}
+
+.topbar {
+  background: var(--penhallow-navy);
+  color: white;
+  padding: 1.25rem 2rem;
+}
+
+.logo {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.logo-accent {
+  color: #6ee7b7;
+}
+
+.tagline {
+  font-size: 0.85rem;
+  opacity: 0.85;
+  margin-top: 0.2rem;
+}
+
+.container {
+  max-width: 720px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.customer-select {
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.customer-select select {
+  margin-left: 0.5rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+}
+
+.chat-window {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  min-height: 320px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  overflow-y: auto;
+}
+
+.chat-message {
+  padding: 0.6rem 0.9rem;
+  border-radius: 8px;
+  margin-bottom: 0.6rem;
+  max-width: 80%;
+  font-size: 0.92rem;
+  line-height: 1.4;
+}
+
+.chat-message.bot {
+  background: var(--bg);
+  border: 1px solid var(--border);
+}
+
+.chat-message.user {
+  background: var(--penhallow-teal);
+  color: white;
+  margin-left: auto;
+}
+
+.chat-input {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 0.7rem 0.9rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  font-size: 0.92rem;
+}
+
+.chat-input button {
+  background: var(--penhallow-teal);
+  color: white;
+  border: none;
+  padding: 0.7rem 1.4rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.chat-input button:hover {
+  background: var(--penhallow-navy);
+}
