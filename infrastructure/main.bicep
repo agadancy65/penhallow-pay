@@ -84,7 +84,7 @@ resource cognitiveServices 'Microsoft.CognitiveServices/accounts@2023-05-01' = {
   name: 'cog-penhallow-${uniqueSuffix}'
   location: location
   sku: {
-    name: 'F0' // Free tier — keeps this project within Azure free-tier limits
+    name: 'S0'
   }
   kind: 'CognitiveServices'
   properties: {
