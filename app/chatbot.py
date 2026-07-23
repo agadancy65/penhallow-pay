@@ -83,13 +83,12 @@ def answer_spending_question(
 
     try:
         response = client.chat.completions.create(
-            model="gpt-35-turbo",  # deployment name on the Cognitive Services resource
+            model="gpt-5-nano",  # deployment name on the Cognitive Services resource
             messages=[
                 {"role": "system", "content": _SYSTEM_PROMPT},
                 {"role": "user", "content": user_prompt},
             ],
-            max_tokens=400,
-            temperature=0.3,
+            max_completion_tokens=1000,
         )
         return response.choices[0].message.content
 

@@ -11,6 +11,10 @@ of storing it in source code or plaintext App Settings.
 ==============================================================================
 """
 import os
+from dotenv import load_dotenv
+
+load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))
+
 from azure.identity import DefaultAzureCredential
 from azure.keyvault.secrets import SecretClient
 

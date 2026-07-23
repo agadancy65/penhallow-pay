@@ -7,8 +7,7 @@ It allows customers to ask natural-language questions about their transaction
 history, answered by an Azure Cognitive Services-backed model.
 
 ⚠️  INTENTIONAL VULNERABILITY — DO NOT FIX BEFORE TUESDAY OF WEEK 1
-This file contains the planted security finding referenced as "Incident 1"
-in the case study: a hardcoded Cognitive Services API key. Confirm and log
+This file contains the planted security finding referenced as "Incident 1"in the case study: a hardcoded Cognitive Services API key. Confirm and log
 this finding (Tuesday, Week 1) before remediating it (Wednesday/Thursday).
 
 See config.py for the exact location of the hardcoded credential.
@@ -22,9 +21,9 @@ from pydantic import BaseModel
 import logging
 import os
 
-from app.config import get_cognitive_services_credentials
-from app.transactions import get_customer_transactions, MOCK_CUSTOMERS
-from app.chatbot import answer_spending_question
+from config import get_cognitive_services_credentials
+from transactions import get_customer_transactions, MOCK_CUSTOMERS
+from chatbot import answer_spending_question
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("penhallow.spending_insights")
